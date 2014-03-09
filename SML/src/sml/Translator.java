@@ -2,8 +2,12 @@ package sml;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.Scanner;
 
 /*
@@ -18,11 +22,21 @@ public class Translator {
 	private Labels labels; // The labels of the program being translated
 	private ArrayList<Instruction> program; // The program to be created
 	private String fileName; // source file of SML code
+	private Properties props;
 
 	private static final String SRC = "src";
 
 	public Translator(String fileName) {
 		this.fileName = SRC + "/" + fileName;
+		// load the properties file
+		try {
+			Properties props = new Properties();
+			InputStream in = getClass().getResourceAsStream("props.properties");
+			props.load(in);
+			in.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// translate the small program in the file into lab (the labels) and
@@ -83,6 +97,16 @@ public class Translator {
 			return null;
 
 		String ins = scan();
+		try {
+			String className = props.getProperty(ins);
+			Class<?> c = Class.forName(className);
+			Object[] params = getParams();
+			Constructor<?> cons = c.getConstructor(toClass(params));
+			
+		} catch(Exception e) {
+			
+		}
+
 		switch (ins) {
 		case "add":
 			r = scanInt();
@@ -152,5 +176,35 @@ public class Translator {
 		} catch (NumberFormatException e) {
 			return Integer.MAX_VALUE;
 		}
+	}
+	
+	/*
+	 * Return an array of Objects representing each element on
+	 * the line. Elements are parsed as Integers where possible,
+	 * or otherwise left as Strings
+	 */
+	private Object[] getParams() {
+		List<Object> params = new ArrayList<Object>();
+		String nextParam = scan();
+		while(nextParam.length()!=0) {
+			try{
+				Integer nextParamInt = Integer.parseInt(nextParam);
+				params.add(nextParamInt);
+			} catch (NumberFormatException e) {
+				params.add(nextParam);
+			} finally {
+				nextParam = scan();
+			}
+		}
+		return params.toArray();
+	}
+	
+
+	private Class<?>[] toClass(Object[] params) {
+		Class<?>[] result = new Class[params.length];
+		for(int i=0 ; i<params.length ; i++) {
+			result[i] = params.getClass();
+		}
+		return result;
 	}
 }
