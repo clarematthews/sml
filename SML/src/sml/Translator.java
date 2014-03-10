@@ -30,7 +30,7 @@ public class Translator {
 		this.fileName = SRC + "/" + fileName;
 		// load the properties file
 		try {
-			Properties props = new Properties();
+			props = new Properties();
 			InputStream in = getClass().getResourceAsStream("props.properties");
 			props.load(in);
 			in.close();
@@ -87,63 +87,22 @@ public class Translator {
 	// removed. Translate line into an instruction with label label
 	// and return the instruction
 	public Instruction getInstruction(String label) {
-		int s1; // Possible operands of the instruction
-		int s2;
-		int r;
-		int x;
-		String l2;
-
 		if (line.equals(""))
 			return null;
 
 		String ins = scan();
+		String className = props.getProperty(ins);
+
 		try {
-			String className = props.getProperty(ins);
 			Class<?> c = Class.forName(className);
 			Object[] params = getParams();
 			Constructor<?> cons = c.getConstructor(toClass(params));
-			
-		} catch(Exception e) {
-			
+			return (Instruction)cons.newInstance(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		switch (ins) {
-		case "add":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new AddInstruction(label, r, s1, s2);
-		case "lin":
-			r = scanInt();
-			x = scanInt();
-			return new LinInstruction(label, r, x);
-		case "sub":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new SubInstruction(label, r, s1, s2);	
-		case "out":
-			s1 = scanInt();
-			return new OutInstruction(label, s1);
-		case "bnz":
-			s1 = scanInt();
-			l2 = scan();
-			return new BnzInstruction(label, s1, l2);
-		case "mul":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new MulInstruction(label, r, s1, s2);
-		case "div":
-			r = scanInt();
-			s1 = scanInt();
-			s2 = scanInt();
-			return new DivInstruction(label, r, s1, s2);
-		}
-
-		return null;
 	}
-
 	/*
 	 * Return the first word of line and remove it from line. If there is no
 	 * word, return ""
@@ -177,7 +136,7 @@ public class Translator {
 			return Integer.MAX_VALUE;
 		}
 	}
-	
+
 	/*
 	 * Return an array of Objects representing each element on
 	 * the line. Elements are parsed as Integers where possible,
@@ -198,7 +157,7 @@ public class Translator {
 		}
 		return params.toArray();
 	}
-	
+
 
 	private Class<?>[] toClass(Object[] params) {
 		Class<?>[] result = new Class[params.length];
