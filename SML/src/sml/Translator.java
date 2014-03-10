@@ -94,9 +94,12 @@ public class Translator {
 		String className = props.getProperty(ins);
 
 		try {
-			Class<?> c = Class.forName(className);
-			Object[] params = getParams();
-			Constructor<?> cons = c.getConstructor(toClass(params));
+			Class c = Class.forName(className);
+			Object[] params = getParams(label);
+			Class[] paramClasses = toClass(params);
+			
+			Constructor cons = c.getConstructor(paramClasses);
+			
 			return (Instruction)cons.newInstance(params);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -142,8 +145,9 @@ public class Translator {
 	 * the line. Elements are parsed as Integers where possible,
 	 * or otherwise left as Strings
 	 */
-	private Object[] getParams() {
+	private Object[] getParams(String label) {
 		List<Object> params = new ArrayList<Object>();
+		params.add(label);
 		String nextParam = scan();
 		while(nextParam.length()!=0) {
 			try{
@@ -158,11 +162,18 @@ public class Translator {
 		return params.toArray();
 	}
 
-
-	private Class<?>[] toClass(Object[] params) {
-		Class<?>[] result = new Class[params.length];
+	/*
+	 *  Convert an Object array into a Class array,
+	 *  with each element being the classtype of the corresponding
+	 *  objects. Integer objects give primitive classtype int.class
+	 */
+	private Class[] toClass(Object[] params) {
+		Class[] result = new Class[params.length];
 		for(int i=0 ; i<params.length ; i++) {
-			result[i] = params.getClass();
+			result[i] = params[i].getClass();
+			if(result[i] == Integer.class){
+				result[i] = int.class;
+			}
 		}
 		return result;
 	}
