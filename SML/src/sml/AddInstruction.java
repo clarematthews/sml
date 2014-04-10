@@ -1,11 +1,9 @@
 package sml;
 
 /**
- * This class ....
+ * This class executes an add instruction on registers.
  * 
- * @author someone
  */
-
 public class AddInstruction extends Instruction {
 
 	private int result;

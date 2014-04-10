@@ -5,8 +5,6 @@ package sml;
 
 /**
  * This class executes a divide instruction on registers.
- * 
- * @author cmatth04
  *
  */
 public class DivInstruction extends Instruction {
@@ -26,19 +24,14 @@ public class DivInstruction extends Instruction {
 		this.op2 = op2;
 	}
 
-	/* (non-Javadoc)
-	 * @see sml.Instruction#execute(sml.Machine)
-	 */
 	@Override
 	public void execute(Machine m) {
 		int value1 = m.getRegisters().getRegister(op1);
 		int value2 = m.getRegisters().getRegister(op2);
-		try {
+		if (value2 == 0)
+			System.out.println("Divide by zero. Register " + result + " not updated.");
+		else
 			m.getRegisters().setRegister(result, value1/value2);
-		}
-		catch(ArithmeticException ex) {
-			System.err.println("Register " + result + " not updated. " + ex.getMessage());
-		}
 	}
 	
 	@Override

@@ -5,8 +5,6 @@ package sml;
 
 /**
  * This class executes a multiply instruction on registers.
- * 
- * @author cmatth04
  *
  */
 public class MulInstruction extends Instruction {
@@ -26,9 +24,6 @@ public class MulInstruction extends Instruction {
 		this.op2 = op2;
 	}
 
-	/* (non-Javadoc)
-	 * @see sml.Instruction#execute(sml.Machine)
-	 */
 	@Override
 	public void execute(Machine m) {
 		int value1 = m.getRegisters().getRegister(op1);

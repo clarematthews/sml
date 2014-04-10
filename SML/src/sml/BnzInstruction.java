@@ -1,5 +1,9 @@
 package sml;
 
+/**
+ * This class executes a boolean non-zero instruction on registers.
+ *
+ */
 public class BnzInstruction extends Instruction {
 
 	private int op1;

@@ -1,5 +1,9 @@
 package sml;
 
+/**
+ * This class executes a subtract instruction on registers.
+ *
+ */
 public class SubInstruction extends Instruction {
 
 	private int result;

@@ -50,8 +50,9 @@ public class Machine {
 		System.out.println(m.getRegisters() + ".");
 	}
 
-	// Print the program
-
+	/**
+	 * Print the program
+	 */
 	@Override
 	public String toString() {
 		StringBuffer s = new StringBuffer();
@@ -60,9 +61,10 @@ public class Machine {
 		return s.toString();
 	}
 
-	// Execute the program in prog, beginning at instruction 0.
-	// Precondition: the program and its labels have been store properly.
-
+	/**
+	 * Execute the program in prog, beginning at instruction 0.
+	 * Precondition: the program and its labels have been stored properly.
+	 */
 	public void execute() {
 		setPc(0);
 		setRegisters(new Registers());

@@ -3,11 +3,10 @@ package sml;
 import lombok.Data;
 
 /**
- * This class ....
+ * This class keeps record of the value in each register
  * 
  * An instance contains 32 registers and methods to access and change them
  * 
- * @author someone
  */
 
 @Data
@@ -28,15 +27,16 @@ public class Registers {
 		}
 	}
 
-	// Set register i to v.
-	// Precondition: 0 <= i <= NUMBEROFREGISTERS
-
+	/**
+	* Set register i to v.
+	* Precondition: 0 <= i <= NUMBEROFREGISTERS
+	*/
 	public void setRegister(int i, int v) {
-		registers[i] = v;
+			registers[i] = v;
 	}
 
 	public int getRegister(int i) {
-		return registers[i];
+			return registers[i];
 	}
 
 }

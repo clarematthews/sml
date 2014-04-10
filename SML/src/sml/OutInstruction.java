@@ -1,5 +1,9 @@
 package sml;
 
+/**
+ * This class executes a print instruction on registers.
+ *
+ */
 public class OutInstruction extends Instruction {
 	
 	private int op1;

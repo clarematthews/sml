@@ -1,11 +1,9 @@
 package sml;
 
 /**
- * This class ....
+ * This class executes a store instruction on registers.
  * 
- * @author someone
  */
-
 public class LinInstruction extends Instruction {
 	private int register;
 	private int value;
