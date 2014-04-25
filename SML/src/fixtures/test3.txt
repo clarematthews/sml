@@ -1,0 +1,6 @@
+f1 add 3 1 2
+f2 bnz 1 f5
+f3 mul 4 2 3
+f4 div 7 3 11
+f5 out 5
+f6 sub 10 4 1

@@ -101,6 +101,9 @@ public class Translator {
 			Constructor cons = c.getConstructor(paramClasses);
 			
 			return (Instruction)cons.newInstance(params);
+		} catch (NullPointerException e) {
+			System.err.println("Error. Instruction class not found.");
+			return null;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
